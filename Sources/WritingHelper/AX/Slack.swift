@@ -18,12 +18,6 @@ enum Slack {
 
     static let bundleID = "com.tinyspeck.slackmacgap"
 
-    static var step: SlackStep {
-        let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID).first
-        return slackStep(installed: NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleID) != nil,
-                         running: running != nil, hasFlag: running.map(slackHasAccessibility) ?? false)
-    }
-
     static func restartSlackWithAccessibility() {
         let running = NSRunningApplication.runningApplications(withBundleIdentifier: bundleID)
         running.forEach { $0.terminate() }

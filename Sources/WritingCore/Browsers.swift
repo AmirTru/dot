@@ -58,12 +58,3 @@ public func normalizedSite(_ typed: String) -> String? {
     if host.hasPrefix("www.") { host.removeFirst(4) }
     return host
 }
-
-public enum SlackStep: Sendable, Equatable { case notInstalled, needsOpen, needsRestart, done }
-
-/// Slack only shows its message box to Dot when it was started with the accessibility flag.
-public func slackStep(installed: Bool, running: Bool, hasFlag: Bool) -> SlackStep {
-    guard installed else { return .notInstalled }
-    guard running else { return .needsOpen }
-    return hasFlag ? .done : .needsRestart
-}

@@ -39,7 +39,6 @@ final class SetupModel: ObservableObject {
     @Published var accessibility = false
     @Published var claudeInstalled = false
     @Published var claudeConnected = false
-    @Published var slack: SlackStep = .notInstalled
     @Published var openAtLogin = true
     @Published var connecting = false
     private let auth: AuthMonitor
@@ -48,7 +47,7 @@ final class SetupModel: ObservableObject {
 
     init(auth: AuthMonitor) { self.auth = auth }
 
-    var allDone: Bool { accessibility && claudeConnected && (slack == .done || slack == .notInstalled) }
+    var allDone: Bool { accessibility && claudeConnected }
 
     func start() {
         refresh()
@@ -61,7 +60,6 @@ final class SetupModel: ObservableObject {
     private func refresh() {
         accessibility = Permissions.isTrusted
         claudeInstalled = ClaudePaths.isInstalled
-        slack = Slack.step
         ticks += 1
         // `claude auth status` starts a process, so ask every 3 s.
         if ticks % 3 == 1, claudeInstalled { Task { await auth.refresh() } }
@@ -70,7 +68,6 @@ final class SetupModel: ObservableObject {
 
     func allowAccessibility() { Permissions.ask(); Permissions.openSettings() }
     func connect() { connecting = true; auth.startConnectFlow() }
-    func slackAction() { Slack.restartSlackWithAccessibility() }
 }
 
 private struct SetupView: View {
@@ -93,19 +90,12 @@ private struct SetupView: View {
                     if model.connecting { ProgressView().controlSize(.small) }
                     Button(model.claudeInstalled ? "Connect" : "Install") { model.connect() }
                 }
-                if model.slack != .notInstalled {
-                    Divider().padding(.leading, 50)
-                    row(3, "Turn on Slack", "Slack restarts once. Unsent drafts stay saved.", done: model.slack == .done) {
-                        Button(model.slack == .needsOpen ? "Open Slack" : "Restart Slack") { model.slackAction() }
-                    }
-                }
             }
             .background(Color.primary.opacity(0.04), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(Color.primary.opacity(0.08)))
             .padding(.horizontal, 24).padding(.top, 20)
             .animation(.snappy(duration: 0.25), value: model.accessibility)
             .animation(.snappy(duration: 0.25), value: model.claudeConnected)
-            .animation(.snappy(duration: 0.25), value: model.slack)
             HStack {
                 Toggle("Open Dot at login", isOn: $model.openAtLogin).toggleStyle(.checkbox).font(.callout)
                 Spacer()

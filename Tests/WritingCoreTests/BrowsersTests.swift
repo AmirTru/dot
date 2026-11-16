@@ -41,10 +41,3 @@ import Testing
     #expect(normalizedSite("linear.app") == "linear.app")
     #expect(normalizedSite("not a site") == nil)
 }
-
-@Test func slackSetupStep() {
-    #expect(slackStep(installed: false, running: false, hasFlag: false) == .notInstalled)
-    #expect(slackStep(installed: true, running: false, hasFlag: false) == .needsOpen)
-    #expect(slackStep(installed: true, running: true, hasFlag: false) == .needsRestart)
-    #expect(slackStep(installed: true, running: true, hasFlag: true) == .done)
-}

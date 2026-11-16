@@ -19,7 +19,7 @@ jobs:
     runs-on: xcode-27
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Unit tests
         run: scripts/test.sh
       # The tests only compile the logic library; this compiles the whole app as users build it.
@@ -32,6 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: ShellCheck
         run: shellcheck install.sh scripts/*.sh scripts/hooks/pre-commit

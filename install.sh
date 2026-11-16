@@ -29,10 +29,9 @@ main() {
     fail "Dot is built with Apple's Command Line Tools. A window to install them just opened; when it finishes, run this command again."
   fi
 
-  local work
+  # Script-wide, not local: the cleanup runs after main has returned.
   work="$(mktemp -d)"
-  # Expanded now: by the time the shell exits, main's local variables are gone.
-  trap "rm -rf '$work'" EXIT
+  trap 'rm -rf "$work"' EXIT
   if [[ -n "${DOT_SOURCE:-}" ]]; then
     say "Using local source at $DOT_SOURCE"
     cp -R "$DOT_SOURCE/." "$work/dot"

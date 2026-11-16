@@ -37,11 +37,10 @@ curl -fsSL https://raw.githubusercontent.com/AmirTru/dot/main/install.sh | bash
 
 It downloads Dot, builds it on your Mac (about a minute the first time), and opens it. If Apple's Command Line Tools aren't installed, it opens their installer first; run the command again when that finishes.
 
-On first launch a welcome window walks you through three steps, and each one turns green when it's done:
+On first launch a welcome window walks you through two steps, and each one turns green when it's done:
 
 1. **Allow Accessibility**, so Dot can see the text box you're typing in.
 2. **Connect your Anthropic account.** Dot opens Anthropic's normal sign-in in your browser. Single sign-on (SSO) works if your company uses it.
-3. **Turn on Slack** (only if Slack is installed). Slack restarts once with accessibility turned on; unsent drafts stay saved.
 
 Why build on your Mac instead of downloading an app: an app built on your own Mac isn't blocked by macOS, and a signing certificate made once on your Mac (kept in its own keychain under `~/Library/Application Support/Dot/signing`) keeps the Accessibility permission across updates.
 
@@ -59,7 +58,7 @@ Then remove Dot from System Settings > Privacy & Security > Accessibility.
 
 ## Where it works
 
-Everywhere you type: Slack, Mail, Notes, and any website in Safari, Chrome (and Arc, Edge, Brave, Dia), Firefox or Zen. Slack needs one restart with accessibility on; the welcome window or the Slack banner does it for you.
+Everywhere you type: Slack, Mail, Notes, and any website in Safari, Chrome (and Arc, Edge, Brave, Dia), Firefox or Zen. Slack needs one restart with accessibility on; the Slack banner offers it the first time you open Slack.
 
 You choose where Dot stays out:
 
