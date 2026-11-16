@@ -22,3 +22,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unit tests
         run: scripts/test.sh
+      # The tests only compile the logic library; this compiles the whole app as users build it.
+      - name: Build the app
+        run: swift build -c release
+
+  install-script:
+    # Strangers pipe install.sh into bash, so every shell script is checked. Linux runners are
+    # cheaper than macOS and come with ShellCheck.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: ShellCheck
+        run: shellcheck install.sh scripts/*.sh scripts/hooks/pre-commit
