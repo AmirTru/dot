@@ -1,0 +1,24 @@
+name: Unit tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A newer push to the same pull request cancels the older run, so minutes aren't spent on stale code.
+concurrency:
+  group: unit-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  unit-tests:
+    # Dot needs the macOS 27 SDK; GitHub's Xcode 27 image runs on macOS 27, Apple silicon.
+    runs-on: xcode-27
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit tests
+        run: scripts/test.sh
